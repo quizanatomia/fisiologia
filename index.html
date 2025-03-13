@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Novel de Fisiologia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos Gerais */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            height: 100vh;
+            background-image: url('background.jpg'); /* Coloque o caminho da sua imagem aqui */
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+            position: relative; /* Para posicionamento absoluto dos filhos */
+        }
+
+                /* Container do Cenário */
+                .scenario-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Imagem do Cenário */
+        .scenario {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%; /* Largura maior que a tela */
+            height: 100%;
+            background-image: url('https://i.imgur.com/7RIK7jV.jpg'); /* Coloque o caminho da sua imagem aqui */
+            background-size: cover;
+            background-position: center;
+            animation: scroll 80s linear infinite; /* Animação de scroll */
+        }
+
+        /* Animação de Scroll */
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%); /* Move a imagem para a esquerda */
+            }
+        }
+
+        /* Título do Jogo */
+        .game-title {
+            font-family: 'Cinzel';
+            position: absolute;
+            top: 30px; /* Ajuste a distância do topo */
+            left: 0px; /* Ajuste a distância da esquerda */
+            font-size: 96px;
+            color: #ffffff;
+            text-shadow: 4px 4px 8px rgb(44, 44, 44);
+            animation: fadeInDown 1.5s ease-out;
+            background-color: rgba(102, 63, 8, 0.829); /* Fundo translúcido */
+            padding: 20px 70px; /* Espaçamento interno */
+            border-radius: 15px; /* Bordas arredondadas */
+            display: inline-block; /* Ajusta o tamanho ao conteúdo */
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Botões do Menu */
+        .menu-buttons {
+            position: absolute;
+            top: 300px; /* Ajuste a distância do topo */
+            left: 50px; /* Ajuste a distância da esquerda */
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* Espaçamento entre botões */
+            opacity: 0; /* Inicialmente invisíveis */
+            animation: fadeIn 2s ease-in forwards;
+            animation-delay: 1s; /* Espera a animação do título terminar */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .menu-button {
+            font-family: 'Cinzel';
+            padding: 20px 40px;
+            font-size: 28px;
+            color: white;
+            background-color: #6d3007f1;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.5s ease;
+        }
+
+        .menu-button:hover::before {
+            left: 100%;
+        }
+
+        .menu-button:hover {
+            background-color: #4a2a07;
+            transform: translateX(20px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-button:active {
+            transform: translateX(0);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Jogo */
+        .game-container {
+            position: relative;
+            width: 1920px;
+            height: 1080px;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            overflow: hidden;
+            display: none; /* Escondido inicialmente */
+        }
+
+        .background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .character {
+            position: absolute;
+            bottom: 0;
+            width: 400px;
+            height: auto;
+        }
+
+        #character1 {
+            left: 200px;
+        }
+
+        #character2 {
+            right: 200px;
+        }
+
+        .dialog-box {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 250px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 40px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dialog-text {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .next-button {
+            padding: 15px 30px;
+            font-size: 24px;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .next-button:hover {
+            background-color: #ff3b2f;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="background-music" loop>
+        <source src="relaxing-ambient-music-nostalgic-memories-310690.mp3" type="audio/mpeg">
+    </audio>
+
+     <!-- Container do Cenário -->
+        <div class="scenario-container">
+            <div class="scenario"></div>
+        </div>
+
+    <!-- Menu Principal -->
+    <div class="menu-container">
+        <h1 class="game-title">Fisiologia Visual</h1>
+        <div class="menu-buttons">
+            <button class="menu-button" id="play-button">Jogar</button>
+            <button class="menu-button" id="instructions-button">Instruções</button>
+            <button class="menu-button" id="exit-button">Sair</button>
+        </div>
+    </div>
+
+    <!-- Jogo -->
+    <div class="game-container" id="game-container">
+        <!-- Fundo da cena -->
+        <div class="background" id="background">
+            <img src="cena1.jpg" alt="Cena 1">
+        </div>
+
+        <!-- Personagens -->
+        <div class="character" id="character1">
+            <img src="personagem1.png" alt="Personagem 1">
+        </div>
+        <div class="character" id="character2">
+            <img src="personagem2.png" alt="Personagem 2">
+        </div>
+
+        <!-- Caixa de diálogo -->
+        <div class="dialog-box" id="dialog-box">
+            <div class="dialog-text" id="dialog-text">
+                Bem-vindo ao mundo da fisiologia! Vamos aprender juntos?
+            </div>
+            <button class="next-button" id="next-button">Próximo</button>
+        </div>
+    </div>
+
+    <script>
+
+        // Inicia a música automaticamente
+        const backgroundMusic = document.getElementById('background-music');
+        backgroundMusic.play().catch(error => {
+            console.log("A reprodução automática foi bloqueada. Tocar manualmente.");
+        });
+
+        // Lógica do Menu
+        const menuContainer = document.querySelector('.menu-container');
+        const gameContainer = document.getElementById('game-container');
+        const playButton = document.getElementById('play-button');
+        const instructionsButton = document.getElementById('instructions-button');
+        const exitButton = document.getElementById('exit-button');
+
+        playButton.addEventListener('click', () => {
+            menuContainer.style.display = 'none';
+            gameContainer.style.display = 'block';
+        });
+
+        instructionsButton.addEventListener('click', () => {
+            alert("Instruções:\n\n1. Clique em 'Próximo' para avançar os diálogos.\n2. Escolha as opções para interagir com a história.");
+        });
+
+        exitButton.addEventListener('click', () => {
+            if (confirm("Tem certeza que deseja sair?")) {
+                window.close(); // Fecha a janela (funciona em alguns navegadores)
+            }
+        });
+
+        // Lógica do Jogo
+        const dialogs = [
+            "Bem-vindo ao mundo da fisiologia! Vamos aprender juntos?",
+            "Hoje vamos falar sobre o sistema cardiovascular.",
+            "Você sabia que o coração bate em média 100.000 vezes por dia?",
+            "Incrível, não é? Vamos continuar explorando!"
+        ];
+
+        let currentDialog = 0;
+        const dialogText = document.getElementById('dialog-text');
+        const nextButton = document.getElementById('next-button');
+
+        nextButton.addEventListener('click', () => {
+            if (currentDialog < dialogs.length - 1) {
+                currentDialog++;
+                dialogText.textContent = dialogs[currentDialog];
+            } else {
+                alert("Fim da cena! Vamos para a próxima?");
+                // Aqui você pode adicionar a lógica para mudar de cena
+            }
+        });
+    </script>
+</body>
+</html>
